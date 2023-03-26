@@ -1,5 +1,6 @@
 import Product from '../models/productsModel.js';
 import path from 'path';
+import fs from 'fs';
 export const getProducts = async (req, res) => {
     try {
         const result = await Product.findAll();
@@ -17,6 +18,33 @@ export const singleProduct = async (req, res) => {
             },
         });
         res.json(result);
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const deleteProduct = async (req, res) => {
+    try {
+        const result = await Product.findOne({
+            where: {
+                id: req.params.id,
+            },
+        });
+        if (!result) {
+            return res.json({ msg: 'محصولی پیدا نشد' });
+        }
+        try {
+            const filePath = `./public/images/${result.image}`;
+            fs.unlinkSync(filePath);
+            await Product.destroy({
+                where: {
+                    id: req.params.id,
+                },
+            });
+            res.json({msg:'محصول حذف شد'})
+        } catch (err) {
+            console.log(err);
+        }
     } catch (err) {
         console.log(err);
     }
