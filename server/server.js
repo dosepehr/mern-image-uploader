@@ -10,6 +10,7 @@ const server = express();
 server.use(cors());
 server.use(bodyParser.json());
 server.use(fileUpload());
+server.use(express.static('public'))
 
 // ! roots
 server.use('/api/products', productsRouter);
