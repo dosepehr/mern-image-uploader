@@ -9,6 +9,19 @@ export const getProducts = async (req, res) => {
     }
 };
 
+export const singleProduct = async (req, res) => {
+    try {
+        const result = await Product.findOne({
+            where: {
+                id: req.params.id,
+            },
+        });
+        res.json(result);
+    } catch (err) {
+        console.log(err);
+    }
+};
+
 export const saveProduct = (req, res) => {
     if (req.files == null) {
         return res.json({ msg: 'عکسی انتخاب نکردید' });
@@ -30,7 +43,7 @@ export const saveProduct = (req, res) => {
         if (err) return res.json({ msg: err.message });
         try {
             await Product.create({ name: name, image: fileName, url: url });
-            res.json({msg:'محصول افزوده شد'})
+            res.json({ msg: 'محصول افزوده شد' });
         } catch (err) {
             console.log(err);
         }
