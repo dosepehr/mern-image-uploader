@@ -41,12 +41,59 @@ export const deleteProduct = async (req, res) => {
                     id: req.params.id,
                 },
             });
-            res.json({msg:'محصول حذف شد'})
+            res.json({ msg: 'محصول حذف شد' });
         } catch (err) {
             console.log(err);
         }
     } catch (err) {
         console.log(err);
+    }
+};
+
+export const updateProduct = async (req, res) => {
+    const result = await Product.findOne({
+        where: {
+            id: req.params.id,
+        },
+    });
+    if (!result) {
+        return res.json({ msg: 'محصولی پیدا نشد' });
+    }
+    let fileName = '';
+    if (req.files === null) {
+        fileName = result.image;
+    } else {
+        const file = req.files.file;
+        const fileSize = file.data.length;
+        const ext = path.extname(file.name);
+        fileName = file.md5 + ext;
+        const allowdTypes = ['.png', '.jpg', '.jpeg'];
+        if (!allowdTypes.includes(ext.toLowerCase())) {
+            return res.json({ msg: 'عکس معتبر نیست' });
+        }
+        if (fileSize > 5000000) {
+            return res.json({ msg: 'حجم عکس نباید بیشتر از 5 مگابایت باشد' });
+        }
+
+        file.mv(`./public/images/${fileName}`, async (err) => {
+            if (err) return res.json({ msg: err.message });
+        });
+        const name = req.body.title;
+        const url = `${req.protocol}://${req.get('host')}/images/${fileName}`;
+
+        try {
+            await Product.update(
+                { name: name, image: url },
+                {
+                    where: {
+                        id: req.params.id,
+                    },
+                }
+            );
+            res.json({ msg: 'محصول ویرایش شد' });
+        } catch (err) {
+            console.log(err);
+        }
     }
 };
 
