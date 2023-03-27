@@ -10,7 +10,10 @@ const ProductsList = () => {
             setProducts(data);
         };
         getProducts();
-    }, []);
+    }, [products]);
+    const deleteProduct = async (id) => {
+        await axios.delete(`http://localhost:4000/api/products/${id}`);
+    };
     return (
         <>
             <div className='grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3'>
@@ -19,7 +22,10 @@ const ProductsList = () => {
                         <div key={item.url}>
                             <img src={item.url} alt='' className='w-full' />
                             <p>{item.name}</p>
-                            <button className='bg-sky-400 p-4 text-white hover:bg-sky-900 duration-300'>
+                            <button
+                                onClick={() => deleteProduct(item.id)}
+                                className='bg-sky-400 p-4 text-white hover:bg-sky-900 duration-300'
+                            >
                                 حذف
                             </button>
                             <button className='bg-red-400 p-4 text-white hover:bg-red-900 duration-300'>
