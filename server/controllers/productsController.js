@@ -108,10 +108,11 @@ export const saveProduct = (req, res) => {
     const file = req.files.file;
     const fileSize = file.data.length;
     const ext = path.extname(file.name);
-    const fileName = file.md5 + ext;
+    let dateNow = Math.round(Date.now());
+    const fileName = dateNow + ext;
     const url = `${req.protocol}://${req.get('host')}/images/${fileName}`;
-    const allowdTypes = ['.png', '.jpg', '.jpeg'];
-    if (!allowdTypes.includes(ext.toLowerCase())) {
+    const allowedType = ['.png', '.jpg', '.jpeg'];
+    if (!allowedType.includes(ext.toLowerCase())) {
         return res.json({ msg: 'عکس معتبر نیست' });
     }
     if (fileSize > 5000000) {
