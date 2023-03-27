@@ -60,15 +60,16 @@ export const updateProduct = async (req, res) => {
         return res.json({ msg: 'محصولی پیدا نشد' });
     }
     let fileName = '';
-    if (res.files === null) {
+    if (req.files === null) {
         fileName = result.image;
     } else {
         const file = req.files.file;
         const fileSize = file.data.length;
         const ext = path.extname(file.name);
-        fileName = file.md5 + ext;
-        const allowdTypes = ['.png', '.jpg', '.jpeg'];
-        if (!allowdTypes.includes(ext.toLowerCase())) {
+        let dateNow = Math.round(Date.now());
+        fileName = dateNow + ext;
+        const allowedTypes = ['.png', '.jpg', '.jpeg'];
+        if (!allowedTypes.includes(ext.toLowerCase())) {
             return res.json({ msg: 'عکس معتبر نیست' });
         }
         if (fileSize > 5000000) {
@@ -85,7 +86,7 @@ export const updateProduct = async (req, res) => {
 
         try {
             await Product.update(
-                { name: name, image: url },
+                { name: name, image: fileName, url: url },
                 {
                     where: {
                         id: req.params.id,
