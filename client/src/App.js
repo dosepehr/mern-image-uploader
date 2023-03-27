@@ -1,7 +1,8 @@
+import ProductsList from './components/ProductsList';
 function App() {
     return (
-        <div className='App bg-red-500'>
-            <p>start frontend</p>
+        <div>
+            <ProductsList />
         </div>
     );
 }
