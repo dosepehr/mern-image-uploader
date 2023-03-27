@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 const ProductsList = () => {
     const [products, setProducts] = useState([]);
     useEffect(() => {
@@ -16,6 +17,11 @@ const ProductsList = () => {
     };
     return (
         <>
+            <div className='my-10 flex items-center justify-center'>
+                <Link to='/add' className='bg-pink-500 text-white px-2 py-4 '>
+                    اضافه کردن محصول
+                </Link>
+            </div>
             <div className='grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3'>
                 {products.length > 0 &&
                     products.map((item) => (
@@ -28,9 +34,12 @@ const ProductsList = () => {
                             >
                                 حذف
                             </button>
-                            <button className='bg-red-400 p-4 text-white hover:bg-red-900 duration-300'>
+                            <Link
+                                to={`/edit/${item.id}`}
+                                className='bg-red-400 p-4 text-white hover:bg-red-900 duration-300'
+                            >
                                 ویرایش
-                            </button>
+                            </Link>
                         </div>
                     ))}
             </div>
