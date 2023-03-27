@@ -26,7 +26,7 @@ const ProductsList = () => {
                 {products.length > 0 &&
                     products.map((item) => (
                         <div key={item.url}>
-                            <img src={item.url} alt='' className='w-full' />
+                            <img src={item.url} alt='' className='w-full h-96 object-cover' />
                             <p>{item.name}</p>
                             <button
                                 onClick={() => deleteProduct(item.id)}
