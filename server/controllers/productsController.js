@@ -60,7 +60,7 @@ export const updateProduct = async (req, res) => {
         return res.json({ msg: 'محصولی پیدا نشد' });
     }
     let fileName = '';
-    if (req.files === null) {
+    if (res.files === null) {
         fileName = result.image;
     } else {
         const file = req.files.file;
@@ -74,6 +74,8 @@ export const updateProduct = async (req, res) => {
         if (fileSize > 5000000) {
             return res.json({ msg: 'حجم عکس نباید بیشتر از 5 مگابایت باشد' });
         }
+        const filePath = `./public/images/${result.image}`;
+        fs.unlinkSync(filePath);
 
         file.mv(`./public/images/${fileName}`, async (err) => {
             if (err) return res.json({ msg: err.message });
