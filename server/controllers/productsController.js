@@ -81,22 +81,22 @@ export const updateProduct = async (req, res) => {
         file.mv(`./public/images/${fileName}`, async (err) => {
             if (err) return res.json({ msg: err.message });
         });
-        const name = req.body.title;
-        const url = `${req.protocol}://${req.get('host')}/images/${fileName}`;
+    }
+    const name = req.body.title;
+    const url = `${req.protocol}://${req.get('host')}/images/${fileName}`;
 
-        try {
-            await Product.update(
-                { name: name, image: fileName, url: url },
-                {
-                    where: {
-                        id: req.params.id,
-                    },
-                }
-            );
-            res.json({ msg: 'محصول ویرایش شد' });
-        } catch (err) {
-            console.log(err);
-        }
+    try {
+        await Product.update(
+            { name: name, image: fileName, url: url },
+            {
+                where: {
+                    id: req.params.id,
+                },
+            }
+        );
+        res.json({ msg: 'محصول ویرایش شد' });
+    } catch (err) {
+        console.log(err);
     }
 };
 
